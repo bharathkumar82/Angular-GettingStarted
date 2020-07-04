@@ -1,17 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
 
 
 @Component({
     selector: 'pm-products',
-    templateUrl: './product-list.component.html'
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
+
+  ngOnInit(): void {
+      console.log("Sitting in on Init method");
+    }
+
     pageTitle: string = 'Product List!';
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
-    listFilter: string = 'cart';
+    
+    filteredProducts: IProduct[] = [];
+    _listFilter: string;
+
+    get listFilter(): string {
+      return this._listFilter;
+    }
+
+    set listFilter(value:string) {
+      console.log('Setting filter ' + value);
+      this._listFilter = value;
+      this.filteredProducts = this.listFilter? this.performFilter(this.listFilter) : this.products;
+    }
+
+    performFilter(filterBy: string): IProduct[] {
+      filterBy = filterBy.toLowerCase();
+      return this.products.filter((product: IProduct) => 
+            product.productName.toLowerCase().indexOf(filterBy) !== -1);
+    }
+
+    constructor() {
+      this.filteredProducts = this.products;
+      this.listFilter = 'cart';
+    }
+
+
     products: IProduct[] = [
         {
           "productId": 1,
