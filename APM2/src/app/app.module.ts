@@ -9,13 +9,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductDetailComponent } from './product/product-detail.component';
 import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './home/welcome.component';
+import { ProductDetailGuard } from './product/product-detail.guard';
 
 @NgModule({
   declarations: [AppComponent, ProductListComponent, ConvertToSpacesPipe, StarComponent, ProductDetailComponent, WelcomeComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, 
+  imports: [BrowserModule, FormsModule, HttpClientModule,
             RouterModule.forRoot([
               { path: 'products', component: ProductListComponent }, 
-              { path: 'products/:id', component: ProductDetailComponent },
+              { path: 'products/:id', canActivate: [ProductDetailGuard], component: ProductDetailComponent },
               { path: 'welcome', component: WelcomeComponent },
               { path: '', redirectTo: 'welcome', pathMatch:'full' },
               { path: '**', redirectTo: 'welcome', pathMatch:'full' }
